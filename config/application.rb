@@ -43,5 +43,17 @@ module Project3
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.action_dispatch.default_headers = {
+      "X-Content-Type-Options" => "nosniff",
+      "X-XSS-Protection" => "0",
+      "X-Download-Options" => "noopen",
+      "X-Permitted-Cross-Domain-Policies" => "none",
+      "Referrer-Policy" => "strict-origin-when-cross-origin"
+    }
+
+    if ENV["FRAME_ANCESTORS"] && !ENV["FRAME_ANCESTORS"].empty?
+      config.action_dispatch.default_headers["Content-Security-Policy"] =
+        "frame-ancestors #{ENV['FRAME_ANCESTORS']};"
+    end
   end
 end
